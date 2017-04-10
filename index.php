@@ -1,8 +1,8 @@
 <?php
 
+// If the cmdi parameter is set start the process  
 if (isset($_GET['cmdi'])) {
-	
-	// If the cmdi parameter is set start the transformation    
+		  
     $cmdi = $_GET['cmdi'];
 	
 	// Load the cmdi file from the given uri
@@ -28,7 +28,7 @@ if (isset($_GET['cmdi'])) {
 	    include('error_page.php');
 	}
 } else {
-    // If no cmdi parameter is set throw an error
+    // If cmdi parameter is not set throw an error
     include('error_page.php');
 }	
 
