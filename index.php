@@ -1,10 +1,8 @@
 <?php
 
-	if (isset($_GET['cmdi'])) {
-	    $cmdi = $_GET['cmdi'];
-	} else {
-	    // Fallback behaviour goes here
-	}
+if (isset($_GET['cmdi'])) {
+	// If the cmdi parameter is set start the transformation    
+    $cmdi = $_GET['cmdi'];
 
 	$xslDoc = new DOMDocument();
 	$xslDoc->loadXML(file_get_contents('transformsheet.xsl'));
@@ -18,5 +16,10 @@
 	header('Content-Type:text/html');
 	$data = str_replace("<title/>", '', $data);
 	echo $data;
+
+} else {
+    // If no cmdi parameter is set throw an error
+    include('error_page.php');
+}	
 
 ?>
