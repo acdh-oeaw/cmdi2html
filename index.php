@@ -2,12 +2,25 @@
 
 // If the cmdi parameter is set start the process  
 if (isset($_GET['cmdi'])) {
-		  
-    $cmdi = $_GET['cmdi'];
+	$cmdi = $_GET['cmdi'];
+	if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
+		$context = stream_context_create(array(
+    			'http' => array(
+				'header' => "Authorization: Basic " . base64_encode($_SERVER['PHP_AUTH_USER'] . ":" . $_SERVER['PHP_AUTH_PW'])
+			)
+		));
+		$content = file_get_contents($cmdi, false, $context);
+	} else {
+		$content = file_get_contents($cmdi);
+		if ($content === false) {
+			header('HTTP/1.1 401 Unauthorized');
+			header('WWW-Authenticate: Basic realm="repository"');
+		}
+	}
 	
 	// Load the cmdi file from the given uri
 	$xmlDoc = new DOMDocument();
-	$xmlDoc->loadXML(file_get_contents($cmdi));
+	$xmlDoc->loadXML($content);
 	
 	// Load our xslt transformsheet
 	$xslDoc = new DOMDocument();
@@ -28,8 +41,7 @@ if (isset($_GET['cmdi'])) {
 	    include('error_page.php');
 	}
 } else {
-    // If cmdi parameter is not set throw an error
-    include('error_page.php');
+	// If cmdi parameter is not set throw an error
+	include('error_page.php');
 }	
 
-?>
