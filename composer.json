@@ -1,0 +1,7 @@
+{
+    "require": {
+        "ext-dom": "*",
+        "ext-xsl": "*",
+        "ext-xml": "*"
+    }
+}
